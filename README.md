@@ -4,6 +4,7 @@ You won’t implement all the features, only some of them to cover all fundament
 
 ## Project description
 The purpose of this project is to create a command interpreter to manipulate data without a visual interface, like in a Shell (perfect for development and debugging).
+
 This project will cover the following:
 * Create a new object (ex: a new User or a new Place)
 * Retrieve an object from a file, a database etc…
