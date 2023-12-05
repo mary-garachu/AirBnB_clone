@@ -4,7 +4,7 @@ It defines all common attributes/methods for other classes.
 """
 import uuid
 from datetime import datetime
-import json
+from models import storage
 
 
 class BaseModel:
@@ -30,6 +30,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            storage.new(self)
 
     def __str__(self):
         """
@@ -46,6 +47,7 @@ class BaseModel:
         datetime
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
