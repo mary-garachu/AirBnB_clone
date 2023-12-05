@@ -13,10 +13,31 @@ class TestBaseModel(unittest.TestCase):
         self.base_model = BaseModel()
 
     def test_init(self):
-        """Test the __init__ method in BaseModel"""
+        """Test the __init__ method in BaseModel without kwargs"""
         self.assertIsInstance(self.base_model.id, str)
         self.assertIsInstance(self.base_model.created_at, datetime)
         self.assertIsInstance(self.base_model.updated_at, datetime)
+
+    def test_init_with_kwargs(self):
+        """Test the __init__ with kwargs """
+        kwargs = {
+                'id': 'test_id',
+                'created_at': '2023-12-05T10:30:00.000000',
+                'updated_at': '2023-12-05T11:45:00.000000',
+                'custom_attribute': 'some_value'
+                }
+        new_base_model = BaseModel(**kwargs)
+        self.assertEqual(new_base_model.id, 'test_id')
+        self.assertEqual(new_base_model.custom_attribute, 'some_value')
+
+        self.assertIsInstance(new_base_model.created_at, datetime)
+        self.assertEqual(
+                new_base_model.created_at,
+                datetime(2023, 12, 5, 10, 30))
+        self.assertIsInstance(new_base_model.updated_at, datetime)
+        self.assertEqual(
+                new_base_model.updated_at,
+                datetime(2023, 12, 5, 11, 45))
 
     def test_str(self):
         """Tests the return of __str__ method"""
