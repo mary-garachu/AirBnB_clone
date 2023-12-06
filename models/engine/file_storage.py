@@ -44,9 +44,16 @@ class FileStorage:
         If the file doesn’t exist, no exception should be raised)
         """
         if exists(self.__file_path):
+            from models.base_model import BaseModel
             with open(self.__file_path, 'r') as file:
-                print("File is present")
                 loaded_objs = json.load(file)
                 self.__objects = loaded_objs
+            new_objects = {}
+            for key, value in self.__objects.items():
+                class_name, obj_id = key.split('.')
+                if class_name == 'BaseModel':
+                    new_instance = BaseModel(**value)
+                    new_objects[key] = new_instance
+            self.__objects = new_objects
         else:
             pass
