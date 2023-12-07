@@ -1,8 +1,18 @@
+#!/usr/bin/python3
+"""
+This is the console base for the unit
+"""
+
 import cmd
+import shlex
+from models.base_model import BaseModel
+from models import storage
+
 
 class HBNBCommand(cmd.Cmd):
     """Defines the hbnb command interpreter"""
     prompt = '(hbnb) '
+    my_dict = {'BaseModel': BaseModel}
 
     def emptyline(self):
         """Do nothing when an empty line is received"""
@@ -16,6 +26,45 @@ class HBNBCommand(cmd.Cmd):
         """EOF signal to end the program"""
         return True
 
+    def do_create(self, arg):
+        """ Creates a new instance of the basemodel class
+        saves it and prints the id
+        """
+        if not arg:
+            print("** class name missing **")
+            return
+        my_data = shlex.split(arg)
+        if my_data[0] not in HBNBCommand.my_dict.keys():
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.my_dict[my_data[0]]()
+        new_instance.save()
+        print(new_instance.id)
+
+    def do_show(self, arg):
+        """
+        Prints the string representation of an instance
+        based on the class name and id
+        """
+        tokens = shlex.split(arg)
+        if len(tokens) == 0:
+            print("** class name missing **")
+            return
+        if tokens[0] not in HBNBCommand.my_dict.keys():
+            print("** class doesn't exist **")
+            return
+        if len(tokens) <= 1:
+            print("** instance id missing **")
+            return
+        storage.reload()
+        objs_dict = storage.all()
+        key = tokens[0] + "." + tokens[1]
+        if key in objs_dict:
+            obj_instance = str(objs_dict[key])
+            print(obj_instance)
+        else:
+            print("** no instance found **")
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
