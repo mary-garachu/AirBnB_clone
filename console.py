@@ -7,6 +7,7 @@ import cmd
 import shlex
 from models.base_model import BaseModel
 from models import storage
+import json
 
 
 class HBNBCommand(cmd.Cmd):
@@ -89,6 +90,28 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
         else:
             print("** no instance found **")
+
+    def do_all(self, arg):
+        """
+        Prints all string representation of all instances
+        based on the class name
+        """
+        storage.reload()
+        my_json = []
+        objs_dict = storage.all()
+        if not arg:
+            for key in objs_dict:
+                my_json.append(str(objs_dict[key]))
+            print(json.dumps(my_json))
+            return
+        token = shlex.split(arg)
+        if token[0] in HBNBCommand.my_dict.keys():
+            for key in objs_dict:
+                if token[0] in key:
+                    my_json.append(str(objs_dict[key]))
+            print(json.dumps(my_json))
+        else:
+            print("** class doesn't exist **")
 
 
 if __name__ == '__main__':
