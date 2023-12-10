@@ -72,6 +72,7 @@ class FileStorage:
         """
         if exists(self.__file_path):
             from models.base_model import BaseModel
+            from models.user import User
             with open(self.__file_path, 'r') as file:
                 loaded_objs = json.load(file)
                 self.__objects = loaded_objs
@@ -80,7 +81,9 @@ class FileStorage:
                 class_name, obj_id = key.split('.')
                 if class_name == 'BaseModel':
                     new_instance = BaseModel(**value)
-                    new_objects[key] = new_instance
+                elif class_name == 'User':
+                    new_instance = User(**value)
+                new_objects[key] = new_instance
             self.__objects = new_objects
         else:
             pass
