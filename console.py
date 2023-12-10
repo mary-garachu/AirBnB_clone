@@ -124,6 +124,63 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def do_update(self, arg):
+        """
+        Updates an instance based on the class name and id
+        by adding or updating attribute (save the change into the JSON file).
+        Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """
+        cmd_input = shlex.split(arg)
+        if len(cmd_input) == 0:
+            print('** class name missing **')
+            return
+        if cmd_input[0] not in HBNBCommand.my_dict.keys():
+            print("** class doesn't exist **")
+            return
+        if len(cmd_input) == 1:
+            print('** instance id missing **')
+            return
+        storage.reload()
+        objs_dict = storage.all()
+        obj_key = cmd_input[0] + '.' + cmd_input[1]
+        if obj_key not in objs_dict:
+            print('** no instance found **')
+            return
+        if len(cmd_input) == 2:
+            print('** attribute name missing **')
+            return
+        if len(cmd_input) == 3:
+            print('** value missing **')
+            return
+
+        obj_instance = objs_dict[obj_key]
+
+        """Get the attribute name and value"""
+
+        attr_name = cmd_input[2]
+        attr_value = cmd_input[3]
+
+        """Check if the attribute exists in the object"""
+
+        if hasattr(obj_instance, attr_name):
+
+            """Get the current type of the attribute and cast the value"""
+
+            attr_type = type(getattr(obj_instance, attr_name))
+            try:
+                casted_value = attr_type(attr_value)
+            except ValueError:
+                print('** value missing **')
+                return
+
+            """ Update the attribute value and save changes"""
+
+            setattr(obj_instance, attr_name, casted_value)
+            obj_instance.save()
+        else:
+            print('** attribute name missing **')
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
