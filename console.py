@@ -6,6 +6,7 @@ This is the console base for the unit
 import cmd
 import shlex
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 import json
 
@@ -13,7 +14,7 @@ import json
 class HBNBCommand(cmd.Cmd):
     """Defines the hbnb command interpreter"""
     prompt = '(hbnb) '
-    my_dict = {'BaseModel': BaseModel}
+    my_dict = {'BaseModel': BaseModel, 'User': User}
 
     def emptyline(self):
         """Do nothing when an empty line is received"""
