@@ -73,6 +73,10 @@ class FileStorage:
         if exists(self.__file_path):
             from models.base_model import BaseModel
             from models.user import User
+            from models.place import Place
+            from models.city import City
+            from models.amenity import Amenity
+            from models.review import Review
             with open(self.__file_path, 'r') as file:
                 loaded_objs = json.load(file)
                 self.__objects = loaded_objs
@@ -83,6 +87,14 @@ class FileStorage:
                     new_instance = BaseModel(**value)
                 elif class_name == 'User':
                     new_instance = User(**value)
+                elif class_name == 'Place':
+                    new_instance = Place(**value)
+                elif class_name == 'City':
+                    new_instance = City(**value)
+                elif class_name == 'Amenity':
+                    new_instance = Amenity(**value)
+                elif class_name == 'Review':
+                    new_instance = Review(**value)
                 new_objects[key] = new_instance
             self.__objects = new_objects
         else:

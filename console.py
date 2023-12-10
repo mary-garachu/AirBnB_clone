@@ -7,6 +7,11 @@ import cmd
 import shlex
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.city import City
+from models.amenity import Amenity
+from models.state import State
+from models.review import Review
 from models import storage
 import json
 
@@ -14,7 +19,12 @@ import json
 class HBNBCommand(cmd.Cmd):
     """Defines the hbnb command interpreter"""
     prompt = '(hbnb) '
-    my_dict = {'BaseModel': BaseModel, 'User': User}
+    my_dict = {
+            'BaseModel': BaseModel, 'User': User,
+            'Place': Place, 'City': City,
+            'Amenity': Amenity, 'State': State,
+            'Review': Review
+            }
 
     def emptyline(self):
         """Do nothing when an empty line is received"""
